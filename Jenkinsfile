@@ -63,6 +63,7 @@ pipeline {
                      node_modules/.bin/netlify --version
                      echo "deploy to production"
                      node_modules/.bin/netlify status
+                     node_modules/.bin/netlify deploy --dir=build --prod
                     '''
                 }
             }
