@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment{
-        NETIFY_SITE_ID = '42dd4a42-af36-4c76-80fe-2ee8c85ccffe'
+        NELIFY_SITE_ID = '42dd4a42-af36-4c76-80fe-2ee8c85ccffe'
     }
     stages {
         stage('build') {
@@ -49,20 +49,21 @@ pipeline {
                 junit 'test-results/*.xml'
             }
         }
-        // stage('deploy') {
-        //         agent{
-        //             docker{
-        //                 image 'node:18-alpine'
-        //                 reuseNode true  
-        //             }
-        //         }
-        //         steps {
-        //             sh '''
-        //              npm install netlify-cli 
-        //              node_modules/.bin/netify --version
-        //             '''
-        //         }
-        //     }
+        stage('deploy') {
+                agent{
+                    docker{
+                        image 'node:18-alpine'
+                        reuseNode true  
+                    }
+                }
+                steps {
+                    sh '''
+                     npm install netlify-cli 
+                     node_modules/.bin/netify --version
+                     echo "deploy to production"
+                    '''
+                }
+            }
 
     }
 }
