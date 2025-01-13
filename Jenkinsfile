@@ -36,6 +36,12 @@ pipeline {
                 '''
             }
             
+            
+        }
+        stage('Publish JUnit Report') {
+            steps {
+                junit 'test-results/*.xml'
+            }
         }
         // stage('deploy') {
         //         agent{
