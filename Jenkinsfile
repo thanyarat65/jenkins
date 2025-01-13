@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    environment{
+        NETIFY_SITE_ID = '42dd4a42-af36-4c76-80fe-2ee8c85ccffe'
+    }
     stages {
         stage('build') {
             agent{
