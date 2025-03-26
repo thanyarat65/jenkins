@@ -21,7 +21,7 @@ pipeline {
             steps {
                 echo "🧪 Testing quote function logic..."
                 sh '''
-                    node -e "const quotes = require('./netlify/functions/quote.js'); console.log('Function loaded ✅')"
+                    node -e "const quotes = require('netlify/functions/quote.js'); console.log('Function loaded ✅')"
                 '''
             }
         }
