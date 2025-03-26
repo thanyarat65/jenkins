@@ -4,6 +4,8 @@ pipeline {
     environment {
         NETLIFY_SITE_ID = '42dd4a42-af36-4c76-80fe-2ee8c85ccffe'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token') // Jenkins secret ID
+        JEST_JUNIT_OUTPUT_DIR = 'test-results'
+        JEST_JUNIT_OUTPUT_NAME = 'results.xml'
     }
 
     stages {
@@ -38,6 +40,8 @@ pipeline {
                     echo "🧪 Running tests..."
                     test -f build/index.html
                     npm test || echo "No tests defined, skipping..."
+                    npm install --save-dev jest-junit
+
                 '''
             }
         }
