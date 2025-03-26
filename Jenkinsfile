@@ -34,7 +34,7 @@ pipeline {
             steps {
                 sh '''
                     echo "🧪 Test step (basic syntax check)..."
-                    grep -iq "<html" index.html && echo "✅ HTML tag found"
+                    grep -iq "<html" calculatorapp/index.html && echo "✅ HTML tag found"
                 '''
             }
         }
