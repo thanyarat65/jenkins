@@ -18,7 +18,7 @@ pipeline {
                 sh '''
                     echo "🔧 Build step (static validation)..."
                     ls -la
-                    test -f index.html || (echo "❌ index.html missing" && exit 1)
+                    test -f calculatorapp/index.html || (echo "❌ index.html missing" && exit 1)
                     echo "✅ index.html found, build step complete"
                 '''
             }
