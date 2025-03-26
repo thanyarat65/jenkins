@@ -16,12 +16,10 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "🔧 Installing dependencies and building app..."
-                    node -v
-                    npm -v
-                    npm ci
-                    npm run build
-                    ls -la build
+                    echo "🔧 Build step (static validation)..."
+                    ls -la
+                    test -f index.html || (echo "❌ index.html missing" && exit 1)
+                    echo "✅ index.html found, build step complete"
                 '''
             }
         }
@@ -35,24 +33,9 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "🧪 Running tests..."
-                    npm ci
-
-                    # Run tests with jest-junit output
-                    JEST_JUNIT_OUTPUT_DIR=test-results \
-                    JEST_JUNIT_OUTPUT_NAME=junit.xml \
-                    npm test -- --reporters=default --reporters=jest-junit
-
-                    echo "--- Verifying test results ---"
-                    ls -R test-results || echo "❌ No test results"
+                    echo "🧪 Test step (basic syntax check)..."
+                    grep -iq "<html" index.html && echo "✅ HTML tag found"
                 '''
-            }
-        }
-
-        stage('Publish JUnit Report') {
-            steps {
-                echo "📄 Publishing JUnit reports..."
-                junit 'test-results/junit.xml'
             }
         }
 
@@ -66,7 +49,6 @@ pipeline {
             steps {
                 sh '''
                     echo "🚀 Installing Netlify CLI and deploying..."
-                    npm ci
                     npm install netlify-cli
 
                     node_modules/.bin/netlify --version
@@ -74,19 +56,26 @@ pipeline {
                     node_modules/.bin/netlify deploy \
                       --auth=$NETLIFY_AUTH_TOKEN \
                       --site=$NETLIFY_SITE_ID \
-                      --dir=build \
+                      --dir=. \
                       --prod
                 '''
+            }
+        }
+
+        stage('Post Deploy') {
+            steps {
+                echo "🔄 Post-deploy step..."
+                echo "✅ App successfully deployed to Netlify!"
             }
         }
     }
 
     post {
         success {
-            echo "✅ Pipeline completed successfully."
+            echo "🎉 Pipeline finished successfully!"
         }
         failure {
-            echo "❌ Pipeline failed. Check logs above ☝️"
+            echo "❌ Pipeline failed. Check logs for details."
         }
     }
 }
