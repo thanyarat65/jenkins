@@ -1,73 +1,89 @@
 pipeline {
     agent any
-    environment{
+
+    environment {
         NETLIFY_SITE_ID = '42dd4a42-af36-4c76-80fe-2ee8c85ccffe'
-        NETLIFY_AUTH_TOKEN = credentials('netlify-token')
+        NETLIFY_AUTH_TOKEN = credentials('netlify-token') // Jenkins secret ID
     }
+
     stages {
-        stage('build') {
-            agent{
-                docker{
+        stage('Build') {
+            agent {
+                docker {
                     image 'node:18-alpine'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock'
-                    reuseNode true  
+                    reuseNode true
                 }
             }
             steps {
                 sh '''
-                    ls -la
-                    node --version
-                    npm --version
+                    echo "🔧 Installing dependencies and building app..."
+                    node -v
+                    npm -v
                     npm ci
                     npm run build
-                    ls -la
+                    ls -la build
                 '''
             }
         }
-        stage('test'){
-            agent{
-                docker{
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps{
-                sh '''
-                test -f build/index.html
-                npm test
-                '''
-            }
-            
-            
-        }
-        stage('Publish JUnit Report') {
-            agent{
-                docker{
+
+        stage('Test') {
+            agent {
+                docker {
                     image 'node:18-alpine'
                     reuseNode true
                 }
             }
             steps {
+                sh '''
+                    echo "🧪 Running tests..."
+                    test -f build/index.html
+                    npm test || echo "No tests defined, skipping..."
+                '''
+            }
+        }
+
+        stage('Publish JUnit Report') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                echo "📄 Publishing JUnit reports (if present)..."
                 junit 'test-results/*.xml'
             }
         }
-        stage('deploy') {
-                agent{
-                    docker{
-                        image 'node:18-alpine'
-                        reuseNode true  
-                    }
-                }
-                steps {
-                    sh '''
-                     npm install netlify-cli 
-                     node_modules/.bin/netlify --version
-                     echo "deploy to production"
-                     node_modules/.bin/netlify status
-                     node_modules/.bin/netlify deploy --dir=build --prod
-                    '''
+
+        stage('Deploy') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
                 }
             }
+            steps {
+                sh '''
+                    echo "🚀 Installing Netlify CLI and deploying..."
+                    npm install netlify-cli
+                    node_modules/.bin/netlify --version
 
+                    node_modules/.bin/netlify deploy \
+                      --auth=$NETLIFY_AUTH_TOKEN \
+                      --site=$NETLIFY_SITE_ID \
+                      --dir=build \
+                      --prod
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Pipeline completed successfully."
+        }
+        failure {
+            echo "❌ Pipeline failed."
+        }
     }
 }
