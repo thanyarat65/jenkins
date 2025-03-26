@@ -3,9 +3,9 @@ pipeline {
 
     environment {
         NETLIFY_SITE_ID = '42dd4a42-af36-4c76-80fe-2ee8c85ccffe'
-        NETLIFY_AUTH_TOKEN = credentials('netlify-token') // Jenkins secret ID
+        NETLIFY_AUTH_TOKEN = credentials('netlify-token')
         JEST_JUNIT_OUTPUT_DIR = 'test-results'
-        JEST_JUNIT_OUTPUT_NAME = 'results.xml'
+        JEST_JUNIT_OUTPUT_NAME = 'junit.xml'
     }
 
     stages {
@@ -38,24 +38,22 @@ pipeline {
             steps {
                 sh '''
                     echo "🧪 Running tests..."
-                    test -f build/index.html
-                    npm test || echo "No tests defined, skipping..."
-                    npm install --save-dev jest-junit
+                    npm ci
+                    npm test
 
+                    echo "--- Contents of test-results/ ---"
+                    ls -R test-results || echo "❌ No test-results directory found"
+
+                    echo "--- Searching for .xml files ---"
+                    find . -name "*.xml" || echo "❌ No XML test reports found"
                 '''
             }
         }
 
         stage('Publish JUnit Report') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
             steps {
                 echo "📄 Publishing JUnit reports (if present)..."
-                junit 'test-results/*.xml'
+                junit 'test-results/junit.xml'
             }
         }
 
@@ -69,7 +67,9 @@ pipeline {
             steps {
                 sh '''
                     echo "🚀 Installing Netlify CLI and deploying..."
+                    npm ci
                     npm install netlify-cli
+
                     node_modules/.bin/netlify --version
 
                     node_modules/.bin/netlify deploy \
@@ -87,7 +87,7 @@ pipeline {
             echo "✅ Pipeline completed successfully."
         }
         failure {
-            echo "❌ Pipeline failed."
+            echo "❌ Pipeline failed. Check logs above ☝️"
         }
     }
 }
