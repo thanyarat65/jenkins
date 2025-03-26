@@ -4,8 +4,6 @@ pipeline {
     environment {
         NETLIFY_SITE_ID = '42dd4a42-af36-4c76-80fe-2ee8c85ccffe'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
-        JEST_JUNIT_OUTPUT_DIR = 'test-results'
-        JEST_JUNIT_OUTPUT_NAME = 'junit.xml'
     }
 
     stages {
@@ -39,20 +37,21 @@ pipeline {
                 sh '''
                     echo "🧪 Running tests..."
                     npm ci
-                    npm test
 
-                    echo "--- Contents of test-results/ ---"
-                    ls -R test-results || echo "❌ No test-results directory found"
+                    # Run tests with jest-junit output
+                    JEST_JUNIT_OUTPUT_DIR=test-results \
+                    JEST_JUNIT_OUTPUT_NAME=junit.xml \
+                    npm test -- --reporters=default --reporters=jest-junit
 
-                    echo "--- Searching for .xml files ---"
-                    find . -name "*.xml" || echo "❌ No XML test reports found"
+                    echo "--- Verifying test results ---"
+                    ls -R test-results || echo "❌ No test results"
                 '''
             }
         }
 
         stage('Publish JUnit Report') {
             steps {
-                echo "📄 Publishing JUnit reports (if present)..."
+                echo "📄 Publishing JUnit reports..."
                 junit 'test-results/junit.xml'
             }
         }

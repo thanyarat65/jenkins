@@ -40,12 +40,6 @@
     "@types/node": "^20.8.6",
     "jest-junit": "^16.0.0"
   },
-  "jest": {
-    "reporters": [
-      "default",
-      "jest-junit"
-    ]
-  },
   "jest-junit": {
     "suiteName": "jest tests",
     "outputDirectory": "test-results",
