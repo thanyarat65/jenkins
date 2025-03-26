@@ -1,29 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
-  <title>Simple To-Do</title>
+  <meta charset="UTF-8" />
+  <title>💬 คำคมสร้างแรงบันดาลใจ</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>📝 To-Do List</h1>
-    <form action="/add" method="POST">
-      <input type="text" name="task" placeholder="Add a new task..." required />
-      <button type="submit">Add</button>
-    </form>
-    <h2>Tasks (refresh to update)</h2>
-    <ul id="taskList"></ul>
-  </div>  <script>
-    fetch('/list')
-      .then(res => res.json())
-      .then(tasks => {
-        const list = document.getElementById('taskList');
-        tasks.forEach(task => {
-          const li = document.createElement('li');
-          li.textContent = task;
-          list.appendChild(li);
-        });
-      });
+    <h1>☀️ คำคมประจำวัน</h1>
+    <p id="quote">คลิกปุ่มด้านล่างเพื่อรับแรงบันดาลใจใหม่ๆ</p>
+    <button onclick="getQuote()">✨ รับคำคม</button>
+  </div>
+
+  <script>
+    async function getQuote() {
+      const res = await fetch('/.netlify/functions/quote');
+      const data = await res.json();
+      document.getElementById('quote').textContent = `“${data.quote}”`;
+    }
   </script>
 </body>
 </html>

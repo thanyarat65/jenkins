@@ -3,56 +3,34 @@ pipeline {
 
     environment {
         NETLIFY_SITE_ID = '42dd4a42-af36-4c76-80fe-2ee8c85ccffe'
-        NETLIFY_AUTH_TOKEN = credentials('netlify-token')
+        NETLIFY_AUTH_TOKEN = credentials('netlify-token') // secret in Jenkins
     }
 
     stages {
         stage('Build') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
             steps {
+                echo "🔧 Checking required files..."
                 sh '''
-                    echo "🔧 Build step (static validation)..."
-                    ls -la
-                    test -f index.html || (echo "❌ index.html missing" && exit 1)
-                    echo "✅ index.html found, build step complete"
+                    test -f index.html || (echo "Missing index.html" && exit 1)
+                    test -f netlify/functions/quote.js || (echo "Missing quote function" && exit 1)
                 '''
             }
         }
 
         stage('Test') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
             steps {
+                echo "🧪 Testing quote function logic..."
                 sh '''
-                    echo "🧪 Test step (basic syntax check)..."
-                    grep -iq "<html" index.html && echo "✅ HTML tag found"
+                    node -e "const quotes = require('./netlify/functions/quote.js'); console.log('Function loaded ✅')"
                 '''
             }
         }
 
         stage('Deploy') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
             steps {
+                echo "🚀 Deploying to Netlify..."
                 sh '''
-                    echo "🚀 Installing Netlify CLI and deploying..."
                     npm install netlify-cli
-
-                    node_modules/.bin/netlify --version
-
                     node_modules/.bin/netlify deploy \
                       --auth=$NETLIFY_AUTH_TOKEN \
                       --site=$NETLIFY_SITE_ID \
@@ -64,18 +42,17 @@ pipeline {
 
         stage('Post Deploy') {
             steps {
-                echo "🔄 Post-deploy step..."
-                echo "✅ App successfully deployed to Netlify!"
+                echo "✅ Deployment complete! App is live on Netlify."
             }
         }
     }
 
     post {
         success {
-            echo "🎉 Pipeline finished successfully!"
+            echo "🎉 CI/CD pipeline finished successfully."
         }
         failure {
-            echo "❌ Pipeline failed. Check logs for details."
+            echo "❌ Pipeline failed. Please check logs above."
         }
     }
 }
