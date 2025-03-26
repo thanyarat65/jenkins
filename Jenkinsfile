@@ -18,7 +18,7 @@ pipeline {
                 sh '''
                     echo "🔧 Build step (static validation)..."
                     ls -la
-                    test -f calculatorapp/index.html || (echo "❌ index.html missing" && exit 1)
+                    test -f index.html || (echo "❌ index.html missing" && exit 1)
                     echo "✅ index.html found, build step complete"
                 '''
             }
@@ -34,7 +34,7 @@ pipeline {
             steps {
                 sh '''
                     echo "🧪 Test step (basic syntax check)..."
-                    grep -iq "<html" calculatorapp/index.html && echo "✅ HTML tag found"
+                    grep -iq "<html" index.html && echo "✅ HTML tag found"
                 '''
             }
         }
