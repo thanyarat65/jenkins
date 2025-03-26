@@ -3,30 +3,49 @@ pipeline {
 
     environment {
         NETLIFY_SITE_ID = '42dd4a42-af36-4c76-80fe-2ee8c85ccffe'
-        NETLIFY_AUTH_TOKEN = credentials('netlify-token') // secret in Jenkins
+        NETLIFY_AUTH_TOKEN = credentials('netlify-token')
     }
 
     stages {
         stage('Build') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
             steps {
                 echo "🔧 Checking required files..."
                 sh '''
-                    test -f index.html || (echo "Missing index.html" && exit 1)
-                    test -f netlify/functions/quote.js || (echo "Missing quote function" && exit 1)
+                    test -f index.html || (echo "❌ Missing index.html" && exit 1)
+                    test -f netlify/functions/quote.js || (echo "❌ Missing quote function" && exit 1)
+                    echo "✅ Build check passed."
                 '''
             }
         }
 
         stage('Test') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
             steps {
-                echo "🧪 Testing quote function logic..."
+                echo "🧪 Testing quote function load..."
                 sh '''
-                    node -e "const quotes = require('netlify/functions/quote.js'); console.log('Function loaded ✅')"
+                    node -e "require('./netlify/functions/quote.js'); console.log('✅ Function loaded successfully')"
                 '''
             }
         }
 
         stage('Deploy') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
             steps {
                 echo "🚀 Deploying to Netlify..."
                 sh '''
@@ -42,7 +61,7 @@ pipeline {
 
         stage('Post Deploy') {
             steps {
-                echo "✅ Deployment complete! App is live on Netlify."
+                echo "✅ Deployment complete! Your app is live."
             }
         }
     }
@@ -52,7 +71,7 @@ pipeline {
             echo "🎉 CI/CD pipeline finished successfully."
         }
         failure {
-            echo "❌ Pipeline failed. Please check logs above."
+            echo "❌ Pipeline failed. Check logs for details."
         }
     }
 }
