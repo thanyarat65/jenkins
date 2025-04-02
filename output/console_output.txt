@@ -1,0 +1,227 @@
+Started by user Thanyarat Worachina
+Obtained Jenkinsfile from git https://github.com/thanyarat65/jenkins.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/jenkis with i pee kkkk
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/jenkis with i pee kkkk/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/thanyarat65/jenkins.git # timeout=10
+Fetching upstream changes from https://github.com/thanyarat65/jenkins.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.39.5'
+ > git fetch --tags --force --progress -- https://github.com/thanyarat65/jenkins.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 8d9d5fefac649ddd27b912106b3585a78baa4be6 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8d9d5fefac649ddd27b912106b3585a78baa4be6 # timeout=10
+Commit message: "add jenkinsfile"
+ > git rev-list --no-walk 7d4a580ffaff7b7f15aa9586b99212afd2ca19d3 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withCredentials
+Masking supported pattern matches of $NETLIFY_AUTH_TOKEN
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout Code)
+[Pipeline] echo
+📥 Checking out source code...
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/jenkis with i pee kkkk/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/thanyarat65/jenkins.git # timeout=10
+Fetching upstream changes from https://github.com/thanyarat65/jenkins.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.39.5'
+ > git fetch --tags --force --progress -- https://github.com/thanyarat65/jenkins.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 8d9d5fefac649ddd27b912106b3585a78baa4be6 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8d9d5fefac649ddd27b912106b3585a78baa4be6 # timeout=10
+Commit message: "add jenkinsfile"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] getContext
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker inspect -f . node:18-alpine
+.
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] withDockerContainer
+Jenkins seems to be running inside container 8eb4b0b09a23c75dc3641a7f375edaba5519095b8f43b713c81ef0df31ad24d0
+but /var/jenkins_home/workspace/jenkis with i pee kkkk could not be found among []
+but /var/jenkins_home/workspace/jenkis with i pee kkkk@tmp could not be found among []
+$ docker run -t -d -u 1000:1000 -w "/var/jenkins_home/workspace/jenkis with i pee kkkk" -v "/var/jenkins_home/workspace/jenkis with i pee kkkk:/var/jenkins_home/workspace/jenkis with i pee kkkk:rw,z" -v "/var/jenkins_home/workspace/jenkis with i pee kkkk@tmp:/var/jenkins_home/workspace/jenkis with i pee kkkk@tmp:rw,z" -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18-alpine cat
+$ docker top 9a655742174bcfa502b816305969b0b30a36b284e765b8b873e3f0304640e1c5 -eo pid,comm
+[Pipeline] {
+[Pipeline] echo
+🔧 Checking required files...
+[Pipeline] sh
++ set -e
++ '[[' -f index.html ]]
++ '[[' -f netlify/functions/quote.js ]]
++ echo '✅ Build check passed.'
+✅ Build check passed.
+[Pipeline] }
+$ docker stop --time=1 9a655742174bcfa502b816305969b0b30a36b284e765b8b873e3f0304640e1c5
+$ docker rm -f --volumes 9a655742174bcfa502b816305969b0b30a36b284e765b8b873e3f0304640e1c5
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] getContext
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker inspect -f . node:18-alpine
+.
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] withDockerContainer
+Jenkins seems to be running inside container 8eb4b0b09a23c75dc3641a7f375edaba5519095b8f43b713c81ef0df31ad24d0
+but /var/jenkins_home/workspace/jenkis with i pee kkkk could not be found among []
+but /var/jenkins_home/workspace/jenkis with i pee kkkk@tmp could not be found among []
+$ docker run -t -d -u 1000:1000 -w "/var/jenkins_home/workspace/jenkis with i pee kkkk" -v "/var/jenkins_home/workspace/jenkis with i pee kkkk:/var/jenkins_home/workspace/jenkis with i pee kkkk:rw,z" -v "/var/jenkins_home/workspace/jenkis with i pee kkkk@tmp:/var/jenkins_home/workspace/jenkis with i pee kkkk@tmp:rw,z" -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18-alpine cat
+$ docker top 16dd12a29858b51cefbf56cf00bc4fa702ee68ffd5553f18305a47c5725db74e -eo pid,comm
+[Pipeline] {
+[Pipeline] echo
+🧪 Running tests...
+[Pipeline] sh
++ set -e
++ node -e 'require('"'"'./netlify/functions/quote.js'"'"'); console.log('"'"'✅ Function loaded successfully'"'"')'
+✅ Function loaded successfully
++ echo '✅ All tests passed.'
+✅ All tests passed.
+[Pipeline] }
+$ docker stop --time=1 16dd12a29858b51cefbf56cf00bc4fa702ee68ffd5553f18305a47c5725db74e
+$ docker rm -f --volumes 16dd12a29858b51cefbf56cf00bc4fa702ee68ffd5553f18305a47c5725db74e
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+[Pipeline] getContext
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker inspect -f . node:18-alpine
+.
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] withDockerContainer
+Jenkins seems to be running inside container 8eb4b0b09a23c75dc3641a7f375edaba5519095b8f43b713c81ef0df31ad24d0
+but /var/jenkins_home/workspace/jenkis with i pee kkkk could not be found among []
+but /var/jenkins_home/workspace/jenkis with i pee kkkk@tmp could not be found among []
+$ docker run -t -d -u 1000:1000 -w "/var/jenkins_home/workspace/jenkis with i pee kkkk" -v "/var/jenkins_home/workspace/jenkis with i pee kkkk:/var/jenkins_home/workspace/jenkis with i pee kkkk:rw,z" -v "/var/jenkins_home/workspace/jenkis with i pee kkkk@tmp:/var/jenkins_home/workspace/jenkis with i pee kkkk@tmp:rw,z" -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18-alpine cat
+$ docker top 1aaa6a615dbdeddb7d567a5ab2893d8262151a5f38b0918cf7c04523f6fbc67a -eo pid,comm
+[Pipeline] {
+[Pipeline] echo
+🚀 Deploying to Netlify...
+[Pipeline] sh
++ set -e
++ npx netlify-cli deploy '--auth=****' '--site=31643a85-f944-4a31-adac-1f60d8e42c01' '--dir=.' --prod
+Deploy path:        /var/jenkins_home/workspace/jenkis with i pee kkkk
+Functions path:     /var/jenkins_home/workspace/jenkis with i pee kkkk/netlify/functions
+Configuration path: /var/jenkins_home/workspace/jenkis with i pee kkkk/netlify.toml
+Deploying to main site URL...
+[33m⠋[39m Uploading blobs to deploy store...
+
+​
+Netlify Build                                                 
+────────────────────────────────────────────────────────────────
+​
+❯ Version
+  @netlify/build 30.0.6
+​
+❯ Flags
+  auth: ****
+  deployId: 67ed677405f9d38f25e3cead
+  dir: .
+  open: false
+  prod: true
+  prodIfUnlocked: false
+  site: 31643a85-f944-4a31-adac-1f60d8e42c01
+  skipFunctionsCache: false
+​
+❯ Current directory
+  /var/jenkins_home/workspace/jenkis with i pee kkkk
+​
+❯ Config file
+  /var/jenkins_home/workspace/jenkis with i pee kkkk/netlify.toml
+​
+❯ Context
+  dev
+[33m⠙[39m Finished uploading blobs to deploy store
+[33m⠋[39m Hashing files...
+[33m⠋[39m Looking for a functions cache...
+[33m⠙[39m No cached functions were found
+[33m⠙[39m Finished hashing 31 files and 1 functions
+[33m⠋[39m CDN diffing files...
+[33m⠙[39m CDN requesting 0 files and 0 functions
+[33m⠋[39m Uploading 0 files
+[33m⠙[39m Finished uploading 0 assets
+[33m⠋[39m Waiting for deploy to go live...
+[33m⠙[39m Deploy is live!
+
+Build logs:         https://app.netlify.com/sites/stately-mochi-a1cb7e/deploys/67ed677405f9d38f25e3cead
+Function logs:      https://app.netlify.com/sites/stately-mochi-a1cb7e/logs/functions
+Edge function Logs: https://app.netlify.com/sites/stately-mochi-a1cb7e/logs/edge-functions
+Unique deploy URL:  https://67ed677405f9d38f25e3cead--stately-mochi-a1cb7e.netlify.app
+Website URL:        https://stately-mochi-a1cb7e.netlify.app
+[Pipeline] }
+$ docker stop --time=1 1aaa6a615dbdeddb7d567a5ab2893d8262151a5f38b0918cf7c04523f6fbc67a
+$ docker rm -f --volumes 1aaa6a615dbdeddb7d567a5ab2893d8262151a5f38b0918cf7c04523f6fbc67a
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Cleanup)
+[Pipeline] echo
+🧹 Cleaning up...
+[Pipeline] sh
++ rm -rf node_modules
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Post Deploy)
+[Pipeline] echo
+✅ Deployment complete! Your app is live.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+🎉 CI/CD pipeline finished successfully.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
